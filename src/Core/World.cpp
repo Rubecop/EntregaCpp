@@ -30,7 +30,7 @@ bool World::load()
 	const bool initOk = zombie->init(zombieDescriptor);
 
 	m_enemy = zombie;
-	zombie->setPosition({ .0f, 50.f });
+	zombie->setPosition({ 850.0f, 750.0f });
 
 	// To-Do, Load level: this should have its own class
 	m_map = new tmx::Map();

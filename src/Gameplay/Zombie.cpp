@@ -4,7 +4,6 @@
 bool Zombie::init(const ZombieDescriptor& zombieDescriptor)
 {
 	m_speed = zombieDescriptor.speed;
-	
 	return Enemy::init(zombieDescriptor);
 }
 
