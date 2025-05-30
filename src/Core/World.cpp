@@ -12,7 +12,9 @@ World::~World()
 	delete m_layerOne;
 	delete m_layerTwo;
 	delete m_map;
+	delete m_obstacleSpawner;
 }
+
 
 bool World::load()
 {
@@ -28,9 +30,16 @@ bool World::load()
 	zombieDescriptor.tileHeight = 256.f;
 	Zombie* zombie = new Zombie();
 	const bool initOk = zombie->init(zombieDescriptor);
+	m_obstacle = new Obstacle({ 400.f, 0.f }, { 50.f, 50.f });
 
 	m_enemy = zombie;
 	zombie->setPosition({ 850.0f, 750.0f });
+	
+	m_obstacleSpawner = new ObstacleSpawner(
+		2.0f,                // Intervalo de spawn: cada 2 segundos
+		{ 600.f, 600.f },    // Área de spawn (ancho del juego)
+		{ 250.f, 250.f }       // Tamaño del obstáculo
+	);
 
 	// To-Do, Load level: this should have its own class
 	m_map = new tmx::Map();
@@ -51,7 +60,14 @@ void World::update(uint32_t deltaMilliseconds)
 
 	// Update actors
 	m_enemy->update(deltaMilliseconds);
-
+	if (m_obstacle)
+	{
+		m_obstacle->update(deltaMilliseconds / 1000.f); // convierte ms a segundos
+	}
+	if (m_obstacleSpawner)
+	{
+		m_obstacleSpawner->update(deltaMilliseconds / 1000.f);
+	}
 	// Check for collisions (We could do it in a function here or have a collision manager if it gets complex)
 	const auto& collisionShapes = m_collisionLayer->getShapes();
 	for (const auto* shape : collisionShapes)
@@ -72,4 +88,12 @@ void World::render(sf::RenderWindow& window)
 	window.draw(*m_layerTwo);
 	window.draw(*m_collisionLayer);
 	m_enemy->render(window);
+	if (m_obstacle)
+	{
+		m_obstacle->render(window);
+	}
+	if (m_obstacleSpawner)
+	{
+		m_obstacleSpawner->render(window);
+	}
 }

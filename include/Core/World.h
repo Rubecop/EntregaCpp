@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cstdint>
+#include "Gameplay/Obstacle.h"
+#include <Gameplay/ObstacleSpawner.h>
 
 class Enemy;
 
@@ -42,4 +44,9 @@ class World
 		MapLayer* m_layerOne{ nullptr };
 		MapLayer* m_layerTwo{ nullptr };
 		ObjectLayer* m_collisionLayer{ nullptr };
+
+		//ObstacleTest
+		Obstacle* m_obstacle = nullptr;
+
+		ObstacleSpawner* m_obstacleSpawner = nullptr;
 };

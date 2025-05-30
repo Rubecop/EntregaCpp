@@ -31,6 +31,8 @@ set(PROJECT_HEADERS
     include/Gameplay/Enemy.h
     include/Gameplay/GameObject.h
     include/Gameplay/Zombie.h
+    include/Gameplay/Obstacle.h
+    include/Gameplay/ObstacleSpawner.h
 
     include/Render/SFMLOrthogonalLayer.h
 
@@ -45,6 +47,9 @@ set(PROJECT_SOURCES
 
     src/Gameplay/Enemy.cpp
     src/Gameplay/Zombie.cpp
+    src/Gameplay/Obstacle.cpp
+    src/Gameplay/ObstacleSpawner.cpp
+
 
     src/main.cpp
 )
