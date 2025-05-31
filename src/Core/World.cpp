@@ -12,7 +12,8 @@ World::~World()
 	delete m_layerOne;
 	delete m_layerTwo;
 	delete m_map;
-	delete m_obstacleSpawner;
+	delete m_spawnerManager;
+	delete m_manualMap;
 }
 
 
@@ -30,70 +31,45 @@ bool World::load()
 	zombieDescriptor.tileHeight = 256.f;
 	Zombie* zombie = new Zombie();
 	const bool initOk = zombie->init(zombieDescriptor);
-	m_obstacle = new Obstacle({ 400.f, 0.f }, { 50.f, 50.f });
 
+	m_manualMap = new ManualMap();
 	m_enemy = zombie;
 	zombie->setPosition({ 850.0f, 750.0f });
-	
-	m_obstacleSpawner = new ObstacleSpawner(
-		2.0f,                // Intervalo de spawn: cada 2 segundos
-		{ 600.f, 600.f },    // Área de spawn (ancho del juego)
-		{ 250.f, 250.f }       // Tamaño del obstáculo
-	);
+	sf::FloatRect playerBounds = m_enemy->getBounds();
 
-	// To-Do, Load level: this should have its own class
-	m_map = new tmx::Map();
-	m_map->load("../Data/Levels/demo.tmx");
-	m_layerZero = new MapLayer(*m_map, 0);
-	m_layerOne = new MapLayer(*m_map, 1);
-	m_layerTwo = new MapLayer(*m_map, 2);
+	m_spawnerManager = new SpawnerManager(2.0f, { 200.f, 300.f }, 4.0f);
 
-	m_collisionLayer = new ObjectLayer(*m_map, 3);
-
+	if (m_spawnerManager)
+	{
+		// Asumamos que SpawnerManager expone sus spawners internamente; 
+		// para no romper encapsulación, le añadiremos un método en SpawnerManager:
+		m_spawnerManager->handlePlayerCollision(playerBounds);
+	}
 	return initOk;
 }
 
 void World::update(uint32_t deltaMilliseconds)
 {
-	// To-Do: update level
-	m_layerZero->update(sf::milliseconds(deltaMilliseconds));
-
 	// Update actors
 	m_enemy->update(deltaMilliseconds);
-	if (m_obstacle)
+
+	float deltaSeconds = deltaMilliseconds / 1000.f;
+	if (m_spawnerManager)
+		m_spawnerManager->update(deltaSeconds);
+
+	if (m_enemy && m_spawnerManager)
 	{
-		m_obstacle->update(deltaMilliseconds / 1000.f); // convierte ms a segundos
-	}
-	if (m_obstacleSpawner)
-	{
-		m_obstacleSpawner->update(deltaMilliseconds / 1000.f);
-	}
-	// Check for collisions (We could do it in a function here or have a collision manager if it gets complex)
-	const auto& collisionShapes = m_collisionLayer->getShapes();
-	for (const auto* shape : collisionShapes)
-	{
-		if (shape->getGlobalBounds().intersects(m_enemy->getBounds()))
-		{
-#if DEBUG_MODE
-			printf("Collision is detected");
-#endif
-		}
+		sf::FloatRect playerBounds = m_enemy->getBounds();
+		m_spawnerManager->handlePlayerCollision(playerBounds);
 	}
 }
 
 void World::render(sf::RenderWindow& window)
 {
-	window.draw(*m_layerZero);
-	window.draw(*m_layerOne);
-	window.draw(*m_layerTwo);
-	window.draw(*m_collisionLayer);
+	if (m_manualMap)
+		m_manualMap->render(window);
+
 	m_enemy->render(window);
-	if (m_obstacle)
-	{
-		m_obstacle->render(window);
-	}
-	if (m_obstacleSpawner)
-	{
-		m_obstacleSpawner->render(window);
-	}
+	if (m_spawnerManager)
+		m_spawnerManager->render(window);
 }

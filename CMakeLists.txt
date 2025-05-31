@@ -33,8 +33,11 @@ set(PROJECT_HEADERS
     include/Gameplay/Zombie.h
     include/Gameplay/Obstacle.h
     include/Gameplay/ObstacleSpawner.h
+    include/Gameplay/SpawnerManager.h
+
 
     include/Render/SFMLOrthogonalLayer.h
+    include/Render/ManualMap.h
 
     include/UI/UIScreenMainMenu.h
 )
@@ -44,12 +47,13 @@ set(PROJECT_SOURCES
     src/Core/AssetManager.cpp
     src/Core/Game.cpp
     src/Core/World.cpp
+    src/Core/ManualMap.cpp
 
     src/Gameplay/Enemy.cpp
     src/Gameplay/Zombie.cpp
     src/Gameplay/Obstacle.cpp
     src/Gameplay/ObstacleSpawner.cpp
-
+    src/Gameplay/SpawnerManager.cpp
 
     src/main.cpp
 )

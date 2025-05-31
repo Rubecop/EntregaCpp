@@ -1,9 +1,13 @@
 #include "Gameplay/ObstacleSpawner.h"
-#include <cstdlib> // for rand
+#include <Core/AssetManager.h>
 
-ObstacleSpawner::ObstacleSpawner(float spawnInterval, const sf::Vector2f& spawnPosition, const sf::Vector2f& obstacleSize)
+ObstacleSpawner::ObstacleSpawner(float spawnInterval,
+    const sf::Vector2f& spawnPosition,
+    const sf::Vector2f& obstacleSize,
+    float initialOffset)
     : m_spawnInterval(spawnInterval),
-    m_elapsedTime(0.f),
+    m_elapsedTime(initialOffset),
+    m_enabled(true),            // por defecto arrancamos habilitados
     m_spawnPosition(spawnPosition),
     m_obstacleSize(obstacleSize)
 {
@@ -11,37 +15,67 @@ ObstacleSpawner::ObstacleSpawner(float spawnInterval, const sf::Vector2f& spawnP
 
 ObstacleSpawner::~ObstacleSpawner()
 {
-    for (auto* obstacle : m_obstacles)
-        delete obstacle;
+    for (auto* obs : m_obstacles)
+        delete obs;
     m_obstacles.clear();
+
 }
 
 void ObstacleSpawner::update(float deltaSeconds)
 {
+    // 1) Actualizamos la posición de TODOS los obstáculos generados hasta ahora
+    for (auto* obs : m_obstacles)
+    {
+        obs->update(deltaSeconds);
+    }
+
+    // 2) Si este spawner está "habilitado", avanzamos su temporizador y spawneamos cuando toque
+    if (!m_enabled)
+        return;
+
     m_elapsedTime += deltaSeconds;
 
+    // Si hemos superado el intervalo, generamos uno nuevo y descontamos ese intervalo
     if (m_elapsedTime >= m_spawnInterval)
     {
         spawnObstacle();
-        m_elapsedTime = 0.f;
-    }
-
-    for (auto* obstacle : m_obstacles)
-    {
-        obstacle->update(deltaSeconds);
+        m_elapsedTime -= m_spawnInterval;
+        // (si deltaSeconds > spawnInterval, en un frame muy grande
+        //  quizá deba usarse while(m_elapsedTime >= m_spawnInterval))
     }
 }
 
 void ObstacleSpawner::render(sf::RenderWindow& window)
 {
-    for (auto* obstacle : m_obstacles)
+    for (auto* obs : m_obstacles)
     {
-        obstacle->render(window);
+        obs->render(window);
     }
 }
 
 void ObstacleSpawner::spawnObstacle()
 {
-    Obstacle* obstacle = new Obstacle(m_spawnPosition, m_obstacleSize);
-    m_obstacles.push_back(obstacle);
+    sf::Texture* obstacleTexture = AssetManager::getInstance()->loadTexture("../Data/Images/Obstacles/car2.png");
+    Obstacle* newObs = new Obstacle(m_spawnPosition, m_obstacleSize, obstacleTexture);
+    m_obstacles.push_back(newObs);
+}
+
+void ObstacleSpawner::handlePlayerCollision(const sf::FloatRect& playerBounds)
+{
+    // Recorremos de atrás hacia adelante para poder borrar elementos sin invalidar índices
+    for (int i = static_cast<int>(m_obstacles.size()) - 1; i >= 0; --i)
+    {
+        Obstacle* obs = m_obstacles[i];
+        if (obs->getBounds().intersects(playerBounds))
+        {
+            // Si hay colisión: lo borramos de la memoria y del vector
+            delete obs;
+            m_obstacles.erase(m_obstacles.begin() + i);
+        }
+    }
+}
+
+void ObstacleSpawner::resetTimer()
+{
+    m_elapsedTime = 0.f;
 }
