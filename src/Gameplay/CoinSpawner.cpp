@@ -1,7 +1,7 @@
 #include "Gameplay/CoinSpawner.h"
 #include <Core/AssetManager.h>
-#include <cstdlib> // for rand()
-#include <ctime>   // for time()
+#include <cstdlib>
+#include <ctime>
 
 CoinSpawner::CoinSpawner(Zombie* player,
     float spawnInterval,
@@ -70,29 +70,6 @@ void CoinSpawner::update(float deltaSeconds)
             m_singleElapsedTime = 0.f;
         }
     }
-    //for (int i = static_cast<int>(m_coins.size()) - 1; i >= 0; --i)
-    //{
-    //    Coin* coin = m_coins[i];
-    //    coin->update(deltaSeconds);
-
-    //    // Si la moneda cae por debajo de la ventana (ejemplo: > 800 en y)
-    //    if (coin->getBounds().top > 800)
-    //    {
-    //        delete coin;
-    //        m_coins.erase(m_coins.begin() + i);
-    //    }
-    //}
-
-    //if (!m_enabled)
-    //    return;
-
-    //m_elapsedTime += deltaSeconds;
-
-    //if (m_elapsedTime >= m_spawnInterval)
-    //{
-    //    spawnCoins();
-    //    m_elapsedTime -= m_spawnInterval;
-    //}
 }
 
 void CoinSpawner::render(sf::RenderWindow& window)
@@ -103,22 +80,10 @@ void CoinSpawner::render(sf::RenderWindow& window)
     }
 }
 
-void CoinSpawner::spawnCoins()
-{
-    sf::Texture* coinTexture = AssetManager::getInstance()->loadTexture("../Data/Images/Grabbables/coin.png");
-
-    for (int i = 0; i < 3; ++i)
-    {
-        Coin* newCoin = new Coin(m_spawnPosition, m_coinSize, coinTexture);
-        m_coins.push_back(newCoin);
-    }
-}
-
 void CoinSpawner::spawnSingleCoin(int index)
 {
     sf::Texture* coinTexture = AssetManager::getInstance()->loadTexture("../Data/Images/Grabbables/coin.png");
     sf::Vector2f pos = m_currentBatchSpawnPos;
-    // Usamos la misma posición para todas las monedas del batch
 
     Coin* newCoin = new Coin(pos, m_coinSize, coinTexture);
     m_coins.push_back(newCoin);

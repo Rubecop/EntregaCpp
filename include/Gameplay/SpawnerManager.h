@@ -10,7 +10,8 @@ public:
     SpawnerManager(Zombie* player,
         float spawnInterval,
         const sf::Vector2f& obstacleSize,
-        float switchInterval);
+        float switchInterval,
+        bool isHardmode = false);
 
     ~SpawnerManager();
 
@@ -19,9 +20,11 @@ public:
     void render(sf::RenderWindow& window);
 
     void handlePlayerCollision(const sf::FloatRect& playerBounds);
+
 private:
     void chooseTwoActiveSpawners();
     std::vector<ObstacleSpawner*> m_spawners;
     float m_switchInterval;
     float m_switchElapsed;
+    bool m_isHardMode{false};
 };

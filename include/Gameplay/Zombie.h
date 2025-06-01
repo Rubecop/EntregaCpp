@@ -7,14 +7,11 @@ class Zombie : public Enemy
 {
 	public:
 
-		struct ZombieDescriptor : EnemyDescriptor
-		{
-			sf::Vector2f speed{ .0f, .0f };
-		};
+		Zombie();
 
-		bool init(const ZombieDescriptor& enemyDescriptor);
-
+		bool init();
 		void update(float deltaMilliseconds) override;
+		void render(sf::RenderWindow& window);
 
 		void TakeDamage(int health);
 		void Heal(int health);
@@ -27,8 +24,11 @@ class Zombie : public Enemy
 		int currentHealth = 0;
 		int currentCoins = 0;
 	private:
+		sf::Texture* m_texture = nullptr;
 
-		int maxHealth = 0;
+		int maxHealth = 3;
+
+		//sf::Vector2f m_position = { 50.f, 50.f };
 		sf::Vector2f m_direction{ .0f, .0f };
-		sf::Vector2f m_speed{ .0f, .0f };
+		sf::Vector2f m_speed = { 0.4f, 0.f };
 };

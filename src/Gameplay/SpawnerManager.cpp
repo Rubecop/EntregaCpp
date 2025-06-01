@@ -1,12 +1,15 @@
 #include "Gameplay/SpawnerManager.h"
 #include <cstdlib>   // srand, rand
 #include <ctime>     // time
+#include <iostream>
 
 SpawnerManager::SpawnerManager(Zombie* player,
     float spawnInterval,
     const sf::Vector2f& obstacleSize,
-    float switchInterval)
+    float switchInterval,
+    bool isHardmode)
     : m_switchInterval(switchInterval),
+    m_isHardMode(isHardmode),
     m_switchElapsed(0.f)
 {
     // Inicializamos la semilla de rand() solo una vez
@@ -14,9 +17,12 @@ SpawnerManager::SpawnerManager(Zombie* player,
 
     // Creamos los tres spawners en sus posiciones fijas (X=0, Y=400/600/800)
     // Les pasamos spawnInterval y obstacleSize, sin desfase inicial.
-    m_spawners.push_back(new ObstacleSpawner(player,spawnInterval, { 550.f, -250.f }, obstacleSize, 0.f));
-    m_spawners.push_back(new ObstacleSpawner(player,spawnInterval, { 850.f, -250.f }, obstacleSize, 0.f));
-    m_spawners.push_back(new ObstacleSpawner(player, spawnInterval, { 1150.f , -250.f }, obstacleSize, 0.f));
+
+    std::cout << "Spawning spawners - hardMode: " << std::boolalpha << m_isHardMode << std::endl;
+
+    m_spawners.push_back(new ObstacleSpawner(player,spawnInterval, { 550.f, -350.f }, obstacleSize, 0.f, m_isHardMode));
+    m_spawners.push_back(new ObstacleSpawner(player,spawnInterval, { 850.f, -350.f }, obstacleSize, 0.f, m_isHardMode));
+    m_spawners.push_back(new ObstacleSpawner(player, spawnInterval, { 1150.f , -350.f }, obstacleSize, 0.f, m_isHardMode));
 
     // Antes de arrancar, elegimos aleatoriamente cuáles dos spawners estarán activos
     chooseTwoActiveSpawners();

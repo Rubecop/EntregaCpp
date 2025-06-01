@@ -1,16 +1,30 @@
 #include <Gameplay/Zombie.h>
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <algorithm>
+#include <Core/AssetManager.h>
+#include <iostream>
 
-bool Zombie::init(const ZombieDescriptor& zombieDescriptor)
+Zombie::Zombie()
 {
-	m_speed = zombieDescriptor.speed;
-	maxHealth = 3;
-	currentHealth = maxHealth;
-	currentCoins = 0;
-	return Enemy::init(zombieDescriptor);
 }
 
+bool Zombie::init()
+{
+	currentHealth = maxHealth;
+	currentCoins = 0;
+
+	m_texture = AssetManager::getInstance()->loadTexture("../Data/Images/Enemies/zombie1.png");
+	if (!m_texture) {
+		std::cerr << "ERROR: No se pudo cargar la textura zombie.png\n";
+		return false;
+	}
+
+	m_sprite.setTexture(*m_texture);
+	m_sprite.setPosition(m_position);	// Establece el frame inicial
+
+	return true;  // Llama a init de la clase base si es necesario
+}
 void Zombie::update(float deltaMilliseconds)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -32,6 +46,7 @@ void Zombie::update(float deltaMilliseconds)
 
 	// Clamp horizontal (entre 500 y 1200)
 	m_position.x = std::clamp(m_position.x, 500.f, 1200.f);
+	//m_sprite.setPosition(m_position);
 
 	Enemy::update(deltaMilliseconds);
 }
@@ -51,7 +66,7 @@ void Zombie::TakeDamage(int amount)
 
 void Zombie::Heal(int amount)
 {
-	if (currentHealth > maxHealth) 
+	if (currentHealth < maxHealth)
 	{
 		currentHealth += amount;
 	}
@@ -64,3 +79,9 @@ int Zombie::GetHealth()
 {
 	return currentHealth;
 }
+
+void Zombie::render(sf::RenderWindow& window)
+{
+	window.draw(m_sprite);
+}
+

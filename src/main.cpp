@@ -3,10 +3,12 @@
 #include <Core/Game.h>
 #include <SFML/System/Clock.hpp>
 #include <Utils/Constants.h>
+#include <ctime>
+#include <cstdlib>
 
 int main()
 {
-
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
     // To-Do: Load game config from file instead of hardcoding values in code
     Game::GameCreateInfo gameCI;
     gameCI.gameTitle = GAME_TITLE;

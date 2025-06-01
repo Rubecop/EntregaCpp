@@ -25,7 +25,6 @@ public:
     void resetTimer();
 
 private:
-    void spawnCoins();
     void spawnSingleCoin(int index);
 
 private:

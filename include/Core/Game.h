@@ -31,9 +31,11 @@ class Game
 		bool init(GameCreateInfo& createInfo);
 
 		bool isRunning() const;
+		bool m_isHardMode{ false };
 
 		void update(uint32_t deltaMilliseconds);
 		void render();
+		void onPlayPressed(bool isHardMode);
 
 	private:
 

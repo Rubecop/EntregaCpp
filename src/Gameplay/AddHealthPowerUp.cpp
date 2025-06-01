@@ -7,5 +7,5 @@ AddHealthPowerUp::AddHealthPowerUp(Zombie* player, const sf::Vector2f& pos)
 void AddHealthPowerUp::onGrab()
 {
     std::cout << "¡PowerUp de curación recogido!\n";
-    m_player->Heal(1); 
+    m_player->Heal(1);
 }

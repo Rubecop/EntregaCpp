@@ -15,16 +15,6 @@ bool Game::init(GameCreateInfo& createInfo)
 	changeToMenu(); // Empezamos en el menú
 
 	return true;
-	/*assert(m_window == nullptr && m_world == nullptr && "Game is already initialized, we are about to leak memory");
-
-	m_window = new sf::RenderWindow({ createInfo.screenWidth, createInfo.screenHeight }, createInfo.gameTitle);
-	m_window->setFramerateLimit(createInfo.frameRateLimit);
-
-	changeToMenu();
-
-	m_world = new World();
-	const bool loadOk = m_world->load();
-	return loadOk;*/
 }
 
 Game::~Game()
@@ -64,19 +54,6 @@ void Game::update(uint32_t deltaMilliseconds)
 	// Si quieres volver al menú cuando mueres
 	if (m_currentState == State::Playing && m_world && m_world->isGameOver())
 		changeToMenu();
-
-
-	//// Check if user closed the window
-	//for (auto event = sf::Event(); m_window->pollEvent(event);)
-	//{
-	//	if (event.type == sf::Event::Closed)
-	//	{
-	//		m_window->close();
-	//	}
-	//}
-
-	//// Update scene here
-	//m_world->update(deltaMilliseconds);
 }
 
 void Game::render()
@@ -92,6 +69,21 @@ void Game::render()
 	m_window->display();
 }
 
+void Game::onPlayPressed(bool isHardMode)
+{
+	m_isHardMode = isHardMode;
+
+	if (m_world)
+		delete m_world;
+
+	m_world = new World(*m_window, [this]() {
+		m_currentState = State::Menu;
+		}, m_isHardMode); // pasa el modo
+
+	m_world->load();
+	m_currentState = State::Playing;
+}
+
 void Game::changeToMenu()
 {
 	// Borramos el mundo si existe
@@ -102,9 +94,7 @@ void Game::changeToMenu()
 	}
 
 	// Creamos el menú
-	m_mainMenu = new MainMenu(*m_window, [this]() {
-		changeToWorld(); // iniciar el juego al pulsar "Play"
-		});
+	m_mainMenu = new MainMenu(*m_window, [this](bool isHard) { onPlayPressed(isHard); });
 
 	m_currentState = State::Menu;
 }
@@ -126,8 +116,8 @@ void Game::changeToWorld()
 
 	// Creamos el nuevo mundo con el callback de muerte
 	m_world = new World(*m_window, [this]() {
-		changeToMenu(); // volver al menú al morir
-		});
+		m_currentState = State::Menu;
+		}, m_isHardMode);
 
 	m_world->load(); // No olvides cargar el mundo
 

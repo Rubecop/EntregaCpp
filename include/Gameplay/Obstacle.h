@@ -4,7 +4,7 @@
 class Obstacle
 {
 public:
-    Obstacle(const sf::Vector2f& position, const sf::Vector2f& size, sf::Texture* texture);
+    Obstacle(const sf::Vector2f& position, const sf::Vector2f& size, sf::Texture* texture, float gravity);
 
     void update(float deltaSeconds);
     void render(sf::RenderWindow& window) const;
@@ -12,6 +12,6 @@ public:
 private:
     sf::RectangleShape m_shape;
     sf::Vector2f m_velocity;
-    float m_gravity; // acceleration per second
+    float m_gravity;
     sf::Sprite m_sprite;
 };

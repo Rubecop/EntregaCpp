@@ -1,17 +1,20 @@
 #include "Gameplay/ObstacleSpawner.h"
 #include <Core/AssetManager.h>
+#include <iostream>
 
 ObstacleSpawner::ObstacleSpawner(Zombie* player,
     float spawnInterval,
     const sf::Vector2f& spawnPosition,
     const sf::Vector2f& obstacleSize,
-    float initialOffset)
+    float initialOffset,
+    bool isHardMode)
     : m_spawnInterval(spawnInterval),
     m_elapsedTime(initialOffset),
     m_enabled(true),            // por defecto arrancamos habilitados
     m_spawnPosition(spawnPosition),
     player(player),
-    m_obstacleSize(obstacleSize)
+    m_obstacleSize(obstacleSize),
+    m_isHardMode(isHardMode)
 {
 }
 
@@ -57,9 +60,20 @@ void ObstacleSpawner::render(sf::RenderWindow& window)
 
 void ObstacleSpawner::spawnObstacle()
 {
+    std::cout << "Spawning obstacle - hardMode: " << std::boolalpha << m_isHardMode << std::endl;
+
     sf::Texture* obstacleTexture = AssetManager::getInstance()->loadTexture("../Data/Images/Obstacles/car2.png");
-    Obstacle* newObs = new Obstacle(m_spawnPosition, m_obstacleSize, obstacleTexture);
-    m_obstacles.push_back(newObs);
+
+    if (m_isHardMode) 
+    {
+        Obstacle* newObs = new Obstacle(m_spawnPosition, m_obstacleSize, obstacleTexture,700.f);
+        m_obstacles.push_back(newObs);
+    }
+    else
+    { 
+        Obstacle* newObs = new Obstacle(m_spawnPosition, m_obstacleSize, obstacleTexture, 450.f); 
+        m_obstacles.push_back(newObs);
+    }
 }
 
 void ObstacleSpawner::handlePlayerCollision(const sf::FloatRect& playerBounds)

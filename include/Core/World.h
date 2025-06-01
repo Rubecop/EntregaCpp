@@ -26,7 +26,7 @@ class ObjectLayer;
 class World
 {
 	public:
-		World(sf::RenderWindow& window, std::function<void()> onDeathCallback);
+		World(sf::RenderWindow& window, std::function<void()> onDeathCallback, bool isHardMode);
 		~World();
 
 		// TO-DO: Ideally the scene should be read from file.
@@ -61,5 +61,6 @@ class World
 
 		std::function<void()> m_onDeathCallback;
 		bool m_isGameOver{ false };
+		bool m_isHardMode{ false };
 		void checkPlayerDeath();
 };

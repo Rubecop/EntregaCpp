@@ -35,9 +35,9 @@ void UIManager::render(sf::RenderWindow& window)
     if (!m_player)
         return;
 
-    int lifeCount = m_player->GetHealth(); // Debe existir este método en Zombie
-    std::cout << "Debug: player health = " << m_player->GetHealth() << std::endl;
-    std::cout << "Debug: player coins = " << m_player->GetCoins() << std::endl;
+    int lifeCount = m_player->GetHealth();
+    //std::cout << "Debug: player health = " << m_player->GetHealth() << std::endl;
+    //std::cout << "Debug: player coins = " << m_player->GetCoins() << std::endl;
 
     coinText.setString("" + std::to_string(m_player->GetCoins()));
 

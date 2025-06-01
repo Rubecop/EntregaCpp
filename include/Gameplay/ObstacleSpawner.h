@@ -8,7 +8,7 @@
 class ObstacleSpawner
 {
 public:
-    ObstacleSpawner(Zombie* player,float spawnInterval, const sf::Vector2f& spawnPosition, const sf::Vector2f& obstacleSize, float initialOffset = 0.f);
+    ObstacleSpawner(Zombie* player,float spawnInterval, const sf::Vector2f& spawnPosition, const sf::Vector2f& obstacleSize, float initialOffset = 0.f, bool isHardmode = false);
 
     ~ObstacleSpawner();
     void update(float deltaSeconds);
@@ -29,6 +29,7 @@ private:
     float m_spawnInterval; 
     float m_elapsedTime;  
     bool m_enabled;      
+    bool m_isHardMode;
 
     Zombie* player;
     
