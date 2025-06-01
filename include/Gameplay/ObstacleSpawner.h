@@ -3,14 +3,12 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <Gameplay/Obstacle.h>
+#include <Gameplay/Zombie.h>
 
 class ObstacleSpawner
 {
 public:
-    ObstacleSpawner(float spawnInterval,
-        const sf::Vector2f& spawnPosition,
-        const sf::Vector2f& obstacleSize,
-        float initialOffset = 0.f);
+    ObstacleSpawner(Zombie* player,float spawnInterval, const sf::Vector2f& spawnPosition, const sf::Vector2f& obstacleSize, float initialOffset = 0.f);
 
     ~ObstacleSpawner();
     void update(float deltaSeconds);
@@ -32,6 +30,8 @@ private:
     float m_elapsedTime;  
     bool m_enabled;      
 
+    Zombie* player;
+    
     sf::Vector2f m_spawnPosition;
     sf::Vector2f m_obstacleSize;
     sf::Texture m_obstacleTexture;

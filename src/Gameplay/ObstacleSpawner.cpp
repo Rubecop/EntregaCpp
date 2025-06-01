@@ -1,7 +1,8 @@
 #include "Gameplay/ObstacleSpawner.h"
 #include <Core/AssetManager.h>
 
-ObstacleSpawner::ObstacleSpawner(float spawnInterval,
+ObstacleSpawner::ObstacleSpawner(Zombie* player,
+    float spawnInterval,
     const sf::Vector2f& spawnPosition,
     const sf::Vector2f& obstacleSize,
     float initialOffset)
@@ -9,6 +10,7 @@ ObstacleSpawner::ObstacleSpawner(float spawnInterval,
     m_elapsedTime(initialOffset),
     m_enabled(true),            // por defecto arrancamos habilitados
     m_spawnPosition(spawnPosition),
+    player(player),
     m_obstacleSize(obstacleSize)
 {
 }
@@ -69,6 +71,7 @@ void ObstacleSpawner::handlePlayerCollision(const sf::FloatRect& playerBounds)
         if (obs->getBounds().intersects(playerBounds))
         {
             // Si hay colisión: lo borramos de la memoria y del vector
+            player->TakeDamage(1);
             delete obs;
             m_obstacles.erase(m_obstacles.begin() + i);
         }

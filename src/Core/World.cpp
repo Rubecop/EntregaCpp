@@ -7,11 +7,7 @@
 
 World::~World()
 {
-	delete m_enemy;
-	delete m_layerZero;
-	delete m_layerOne;
-	delete m_layerTwo;
-	delete m_map;
+	delete m_player;
 	delete m_spawnerManager;
 	delete m_manualMap;
 }
@@ -33,16 +29,25 @@ bool World::load()
 	const bool initOk = zombie->init(zombieDescriptor);
 
 	m_manualMap = new ManualMap();
-	m_enemy = zombie;
-	zombie->setPosition({ 850.0f, 750.0f });
-	sf::FloatRect playerBounds = m_enemy->getBounds();
+	m_player = zombie;
 
-	m_spawnerManager = new SpawnerManager(2.0f, { 200.f, 300.f }, 4.0f);
+	m_uiManager = new UIManager(m_player);
+	zombie->setPosition({ 850.0f, 750.0f });
+	sf::FloatRect playerBounds = m_player->getBounds();
+
+	m_spawnerManager = new SpawnerManager(m_player,2.0f, { 200.f, 300.f }, 4.0f);
+
+	m_healthPowerup = new AddHealthPowerUp(m_player, { 700.f,0.f });
+
+	m_coinSpawner = new CoinSpawner(m_player,
+		7.0f,                // cada 5 segundos
+		550.f,               // min X
+		1150.f,              // max X
+		sf::Vector2f(0.f, 0.f),  // posición Y fija (ajusta)
+		sf::Vector2f(100.f, 100.f)); // tamaño de la moneda
 
 	if (m_spawnerManager)
 	{
-		// Asumamos que SpawnerManager expone sus spawners internamente; 
-		// para no romper encapsulación, le añadiremos un método en SpawnerManager:
 		m_spawnerManager->handlePlayerCollision(playerBounds);
 	}
 	return initOk;
@@ -51,16 +56,26 @@ bool World::load()
 void World::update(uint32_t deltaMilliseconds)
 {
 	// Update actors
-	m_enemy->update(deltaMilliseconds);
+	m_player->update(deltaMilliseconds);
 
 	float deltaSeconds = deltaMilliseconds / 1000.f;
 	if (m_spawnerManager)
 		m_spawnerManager->update(deltaSeconds);
 
-	if (m_enemy && m_spawnerManager)
+	m_coinSpawner->update(deltaSeconds);
+
+	m_manualMap->update(deltaSeconds);
+
+	if (m_player && m_spawnerManager)
 	{
-		sf::FloatRect playerBounds = m_enemy->getBounds();
+		sf::FloatRect playerBounds = m_player->getBounds();
 		m_spawnerManager->handlePlayerCollision(playerBounds);
+	}
+
+	if (m_player && m_coinSpawner)
+	{
+		sf::FloatRect playerBounds = m_player->getBounds();
+		m_coinSpawner->handlePlayerCollision(playerBounds);
 	}
 }
 
@@ -69,7 +84,11 @@ void World::render(sf::RenderWindow& window)
 	if (m_manualMap)
 		m_manualMap->render(window);
 
-	m_enemy->render(window);
+	m_player->render(window);
 	if (m_spawnerManager)
 		m_spawnerManager->render(window);
+
+	if (m_uiManager)
+		m_uiManager->render(window);
+	m_coinSpawner->render(window);
 }

@@ -2,7 +2,8 @@
 #include <cstdlib>   // srand, rand
 #include <ctime>     // time
 
-SpawnerManager::SpawnerManager(float spawnInterval,
+SpawnerManager::SpawnerManager(Zombie* player,
+    float spawnInterval,
     const sf::Vector2f& obstacleSize,
     float switchInterval)
     : m_switchInterval(switchInterval),
@@ -13,9 +14,9 @@ SpawnerManager::SpawnerManager(float spawnInterval,
 
     // Creamos los tres spawners en sus posiciones fijas (X=0, Y=400/600/800)
     // Les pasamos spawnInterval y obstacleSize, sin desfase inicial.
-    m_spawners.push_back(new ObstacleSpawner(spawnInterval, { 550.f, -250.f }, obstacleSize, 0.f));
-    m_spawners.push_back(new ObstacleSpawner(spawnInterval, { 850.f, -250.f }, obstacleSize, 0.f));
-    m_spawners.push_back(new ObstacleSpawner(spawnInterval, { 1150.f , -250.f }, obstacleSize, 0.f));
+    m_spawners.push_back(new ObstacleSpawner(player,spawnInterval, { 550.f, -250.f }, obstacleSize, 0.f));
+    m_spawners.push_back(new ObstacleSpawner(player,spawnInterval, { 850.f, -250.f }, obstacleSize, 0.f));
+    m_spawners.push_back(new ObstacleSpawner(player, spawnInterval, { 1150.f , -250.f }, obstacleSize, 0.f));
 
     // Antes de arrancar, elegimos aleatoriamente cuáles dos spawners estarán activos
     chooseTwoActiveSpawners();

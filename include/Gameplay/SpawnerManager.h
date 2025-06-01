@@ -7,7 +7,8 @@
 class SpawnerManager
 {
 public:
-    SpawnerManager(float spawnInterval,
+    SpawnerManager(Zombie* player,
+        float spawnInterval,
         const sf::Vector2f& obstacleSize,
         float switchInterval);
 

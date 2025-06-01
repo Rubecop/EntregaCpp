@@ -23,6 +23,7 @@ FetchContent_MakeAvailable(TMXLITE)
 
 set(PROJECT_HEADERS 
     include/Utils/Constants.h
+    include/Utils/IGrabbable.h
 
     include/Core/AssetManager.h
     include/Core/Game.h
@@ -34,12 +35,18 @@ set(PROJECT_HEADERS
     include/Gameplay/Obstacle.h
     include/Gameplay/ObstacleSpawner.h
     include/Gameplay/SpawnerManager.h
-
+    include/Gameplay/AddHealthPowerUp.h
+    include/Gameplay/AddMoveSpeedPowerUp.h
+    include/Gameplay/MagnetPowerUp.h
+    include/Gameplay/PowerUpBase.h
+    include/Gameplay/Coin.h
+    include/Gameplay/CoinSpawner.h
 
     include/Render/SFMLOrthogonalLayer.h
     include/Render/ManualMap.h
 
     include/UI/UIScreenMainMenu.h
+    include/UI/UIManager.h
 )
 
 set(PROJECT_SOURCES 
@@ -48,12 +55,22 @@ set(PROJECT_SOURCES
     src/Core/Game.cpp
     src/Core/World.cpp
     src/Core/ManualMap.cpp
+    src/Core/IGrabbable.cpp
 
     src/Gameplay/Enemy.cpp
     src/Gameplay/Zombie.cpp
     src/Gameplay/Obstacle.cpp
     src/Gameplay/ObstacleSpawner.cpp
     src/Gameplay/SpawnerManager.cpp
+    src/Gameplay/AddHealthPowerUp.cpp
+    src/Gameplay/AddMoveSpeedPowerUp.cpp
+    src/Gameplay/MagnetPowerUp.cpp
+    src/Gameplay/PowerUpBase.cpp
+    src/Gameplay/Coin.cpp
+    src/Gameplay/CoinSpawner.cpp
+
+
+    src/UI/UIManager.cpp
 
     src/main.cpp
 )
