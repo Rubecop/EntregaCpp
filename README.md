@@ -1,14 +1,15 @@
 # EntregaCpp
-Juego 2D basado en los juegos de esquivar obstáculos tipo Subway Surfers.
 
-Esquiva los coches que se te aproximan, recolecta monedas, e intenta llegar todo lo lejos que puedas.
+2D Lateral Scroll game, based in the Subway Surfers genre.
+
+Dodge the cars coming your way, grab coins, and try to get as far as possible!
 
 PowerUps :
 
- Curación (Te devuelve una vida que hayas perdido)
+ Healing (Returns a life that you have lost)
  
- Boost (Te aumenta la velocidad de movimiento durante un periodo de tiempo)
+ Boost (Augments your movement speed during a brief period of time)
 
- **CONTROLES**
+ **CONTROLS**
  
- A || D - Movimiento Lateral
+ A || D - Lateral Movement
