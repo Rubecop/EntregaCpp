@@ -23,7 +23,6 @@ ObstacleSpawner::~ObstacleSpawner()
     for (auto* obs : m_obstacles)
         delete obs;
     m_obstacles.clear();
-
 }
 
 void ObstacleSpawner::update(float deltaSeconds)

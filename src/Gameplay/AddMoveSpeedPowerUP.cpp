@@ -6,14 +6,13 @@ AddMoveSpeedPowerUP::AddMoveSpeedPowerUP(Zombie* player, const sf::Vector2f& pos
     : PowerUpBase(player, position, "../Data/Images/Grabbables/PowerUpSpeed.png"),
     m_player(player)
 {
-    m_duration = 10.f;
+    m_duration = 7.f;
 }
 
 void AddMoveSpeedPowerUP::onGrab()
 {
     m_active = true;
     m_elapsed = 0.f;
-
     m_originalSpeedX = m_player->getSpeed().x;
 
     sf::Vector2f boostedSpeed = m_player->getSpeed();
@@ -24,14 +23,13 @@ void AddMoveSpeedPowerUP::onGrab()
 void AddMoveSpeedPowerUP::update(float deltaTime)
 {
     PowerUpBase::update(deltaTime);
-
     if (!m_active) return;
-
     m_elapsed += deltaTime;
+
     if (m_elapsed >= m_duration)
     {
         m_active = false;
-        onExpire(); // nuevo método virtual opcional
+        onExpire();
     }
 }
 

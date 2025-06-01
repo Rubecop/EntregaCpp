@@ -1,7 +1,6 @@
 #include <Core/AssetManager.h>
 #include <SFML/Graphics/Texture.hpp>
 
-
 AssetManager* AssetManager::s_instance{ nullptr };
 
 AssetManager* AssetManager::getInstance()
@@ -26,7 +25,7 @@ sf::Texture* AssetManager::loadTexture(const char* assetPath)
 	auto it = m_texturePathToTexture.find(assetPath);
 	if (it != m_texturePathToTexture.end())
 	{
-		return it->second; // Already loaded, reuse
+		return it->second;
 	}
 	else
 	{
@@ -38,7 +37,7 @@ sf::Texture* AssetManager::loadTexture(const char* assetPath)
 			return nullptr;
 		}
 		m_texturePathToTexture[assetPath] = newTexture;
-		return newTexture; // just created a new one
+		return newTexture;
 	}
 }
 

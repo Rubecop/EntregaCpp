@@ -8,7 +8,6 @@
 class Enemy : public GameObject
 {
 	public:
-
 		struct EnemyDescriptor
 		{
 			sf::Vector2f position;
@@ -18,17 +17,16 @@ class Enemy : public GameObject
 		};
 
 		~Enemy() override = default;
-
 		bool init(const EnemyDescriptor& enemyDescriptor);
-
-		sf::FloatRect getBounds() const { return m_sprite.getGlobalBounds(); }
 
 		void update(float deltaMilliseconds) override;
 		void render(sf::RenderWindow& window) override;
 
+		sf::FloatRect getBounds() const { return m_sprite.getGlobalBounds(); }
 	protected:
 
-		sf::Sprite m_sprite;
 		float m_tileWidth{ .0f };
 		float m_tileHeight{ .0f };
+
+		sf::Sprite m_sprite;
 };

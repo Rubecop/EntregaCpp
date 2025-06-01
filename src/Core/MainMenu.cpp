@@ -38,19 +38,18 @@ void MainMenu::handleEvent(const sf::Event& event)
 
         if (m_playEasy.getGlobalBounds().contains(mousePos))
         {
-            m_onPlay(false); // Cambia al mundo
+            m_onPlay(false);
         }
 
         if (m_playHard.getGlobalBounds().contains(mousePos))
         {
-            m_onPlay(true); // Cambia al mundo
+            m_onPlay(true);
         }
     }
 }
 
 void MainMenu::update(float dt)
 {
-    // Animaciones o lógica futura del menú (opcional)
 }
 
 void MainMenu::render(sf::RenderWindow& window)

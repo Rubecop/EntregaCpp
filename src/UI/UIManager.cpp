@@ -6,7 +6,7 @@ UIManager::UIManager(Zombie* player)
     : m_player(player)
 {
     if (!font.loadFromFile("../Data/Fonts/PixelifySans-Bold.ttf")) {
-        std::cerr << "Error cargando la fuente\n";
+        std::cerr << "Error loading font";
     }
     coinText.setFont(font);
     coinText.setCharacterSize(60);
@@ -57,5 +57,5 @@ void UIManager::render(sf::RenderWindow& window)
 
 void UIManager::updateDistance(float deltaMilliseconds)
 {
-    m_distanceText.setString("Distancia: " + std::to_string(m_player->distanciaMetros) + " m");
+    m_distanceText.setString("Distance: " + std::to_string(m_player->distanceInMeters) + " m");
 }

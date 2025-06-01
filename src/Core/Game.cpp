@@ -10,7 +10,6 @@ void Game::createWorld()
 		delete m_world;
 
 	m_world = new World(*m_window, [this]() {
-		// Solo marcamos que el estado debe cambiar
 		m_currentState = State::GameOver;
 		}, m_isHardMode);
 
@@ -24,9 +23,9 @@ bool Game::init(GameCreateInfo& createInfo)
 		sf::VideoMode(createInfo.screenWidth, createInfo.screenHeight),
 		createInfo.gameTitle
 	);
-	m_window->setFramerateLimit(createInfo.frameRateLimit);
 
-	changeToMenu(); // Empezamos en el menú
+	m_window->setFramerateLimit(createInfo.frameRateLimit);
+	changeToMenu();
 
 	return true;
 }
@@ -54,30 +53,31 @@ void Game::update(uint32_t deltaMilliseconds)
 
 		if (m_currentState == State::Menu && m_mainMenu)
 			m_mainMenu->handleEvent(event);
+
 		else if (m_currentState == State::Playing && m_world)
 			m_world->handleEvent(event);
+
 		else if (m_currentState == State::GameOver && m_gameOverMenu)
-			m_gameOverMenu->handleEvent(event); // por si quieres manejar input
+			m_gameOverMenu->handleEvent(event);
 	}
 
-	// Actualización de lógica
 	if (m_currentState == State::Menu && m_mainMenu)
 		m_mainMenu->update(deltaMilliseconds);
+
 	else if (m_currentState == State::Playing && m_world)
 		m_world->update(deltaMilliseconds);
+
 	else if (m_currentState == State::GameOver && m_gameOverMenu)
 	{
 		m_gameOverMenu->update(deltaMilliseconds / 1000.f);
 
-		if (m_gameOverMenu->isFinished()) // o presiona una tecla, etc.
+		if (m_gameOverMenu->isFinished())
 		{
 			delete m_gameOverMenu;
 			m_gameOverMenu = nullptr;
 			changeToMenu();
 		}
 	}
-
-	// Transición a menú de derrota
 	if (m_currentState == State::GameOver && m_world)
 	{
 		m_lastDistance = m_world->m_lastDistance;
@@ -109,7 +109,7 @@ void Game::render()
 void Game::onPlayPressed(bool isHardMode)
 {
 	m_isHardMode = isHardMode;
-	createWorld(); //  Usamos la nueva función
+	createWorld();
 }
 
 void Game::changeToMenu()
@@ -144,5 +144,5 @@ void Game::changeToWorld()
 		m_gameOverMenu = nullptr;
 	}
 
-	createWorld(); //  Reutilizamos
+	createWorld();
 }

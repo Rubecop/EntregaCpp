@@ -12,13 +12,10 @@ namespace sf
 {
 	class RenderWindow;
 }
-
 class World;
-
 class Game
 {
 	public:
-
 		struct GameCreateInfo
 		{
 			std::string gameTitle;
@@ -28,7 +25,6 @@ class Game
 		};
 
 		~Game();
-
 		bool init(GameCreateInfo& createInfo);
 
 		bool isRunning() const;
@@ -50,12 +46,13 @@ class Game
 			Playing,
 			GameOver
 		};
+		void changeToMenu();
+		void changeToWorld();
+
 		State m_currentState{ State::Menu };
-		sf::RenderWindow* m_window{ nullptr };
 		World* m_world{ nullptr };
 		MainMenu* m_mainMenu{ nullptr };
 		GameOverMenu* m_gameOverMenu = { nullptr };
 
-		void changeToMenu();
-		void changeToWorld();
+		sf::RenderWindow* m_window{ nullptr };
 };

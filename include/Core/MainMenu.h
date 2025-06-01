@@ -12,13 +12,13 @@ public:
     void render(sf::RenderWindow& window);
 
 private:
+    void setupUI();
+
+    std::function<void(bool)> m_onPlay;
+
     sf::RenderWindow& m_window;
     sf::Font m_font;
     sf::Text m_titleText;
     sf::Text m_playEasy;
     sf::Text m_playHard;
-
-    std::function<void(bool)> m_onPlay;
-
-    void setupUI();
 };

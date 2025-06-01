@@ -8,10 +8,12 @@ public:
 
     void update(float deltaSeconds);
     void render(sf::RenderWindow& window) const;
+
     const sf::FloatRect getBounds() const;
 private:
+    float m_gravity;
+
     sf::RectangleShape m_shape;
     sf::Vector2f m_velocity;
-    float m_gravity;
     sf::Sprite m_sprite;
 };

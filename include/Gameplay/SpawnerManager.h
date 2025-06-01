@@ -16,14 +16,14 @@ public:
     ~SpawnerManager();
 
     void update(float deltaSeconds);
-
     void render(sf::RenderWindow& window);
-
     void handlePlayerCollision(const sf::FloatRect& playerBounds);
 
 private:
     void chooseTwoActiveSpawners();
+
     std::vector<ObstacleSpawner*> m_spawners;
+
     float m_switchInterval;
     float m_switchElapsed;
     bool m_isHardMode{false};

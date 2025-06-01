@@ -13,11 +13,10 @@ public:
 
     void onExpire();
 private:
+    Zombie* m_player;
+
     float m_duration = 0.f;
     float m_elapsed = 0.f;
     bool m_active = false;
-
-    Zombie* m_player;
     float m_originalSpeedX = 0.f;
-
 };

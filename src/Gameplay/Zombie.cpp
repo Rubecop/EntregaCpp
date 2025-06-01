@@ -13,17 +13,17 @@ bool Zombie::init()
 {
 	currentHealth = maxHealth;
 	currentCoins = 0;
-
 	m_texture = AssetManager::getInstance()->loadTexture("../Data/Images/Enemies/zombie1.png");
+
 	if (!m_texture) {
-		std::cerr << "ERROR: No se pudo cargar la textura zombie.png\n";
+		std::cerr << "Error: Couldn't change texture zombie.png\n";
 		return false;
 	}
 
 	m_sprite.setTexture(*m_texture);
-	m_sprite.setPosition(m_position);	// Establece el frame inicial
+	m_sprite.setPosition(m_position);
 
-	return true;  // Llama a init de la clase base si es necesario
+	return true;
 }
 void Zombie::update(float deltaMilliseconds)
 {
@@ -40,17 +40,15 @@ void Zombie::update(float deltaMilliseconds)
 		m_direction.x = .0f;
 	}
 
-	// Movimiento
 	m_position.x += (m_direction.x * m_speed.x * deltaMilliseconds);
 	m_position.y += (m_direction.y * m_speed.y * deltaMilliseconds);
 
-	// Clamp horizontal (entre 500 y 1200)
 	m_position.x = std::clamp(m_position.x, 500.f, 1200.f);
-	//m_sprite.setPosition(m_position);
+
 	float deltaSeconds = deltaMilliseconds / 1000.f;
 	m_fakeDistance += m_fakeSpeed * deltaSeconds;
 
-	distanciaMetros = static_cast<int>(m_fakeDistance);
+	distanceInMeters = static_cast<int>(m_fakeDistance);
 
 	Enemy::update(deltaMilliseconds);
 }
@@ -64,7 +62,7 @@ void Zombie::TakeDamage(int amount)
 {
 	currentHealth -= amount;
 	if (currentHealth <= 0) {
-		// GAMEOVER Y RECARGAR MAINMENU
+		// World manages this in the end. In retrospective, probably a dumb idea
 	}
 }
 

@@ -9,7 +9,7 @@
 int main()
 {
     std::srand(static_cast<unsigned>(std::time(nullptr)));
-    // To-Do: Load game config from file instead of hardcoding values in code
+
     Game::GameCreateInfo gameCI;
     gameCI.gameTitle = GAME_TITLE;
     gameCI.screenWidth = 1920u;

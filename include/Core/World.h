@@ -5,8 +5,7 @@
 #include <Gameplay/ObstacleSpawner.h>
 #include <Gameplay/SpawnerManager.h>
 #include <Gameplay/CoinSpawner.h>
-#include <Gameplay/AddHealthPowerUp.h>
-#include <Gameplay/AddMoveSpeedPowerUP.h>
+#include <Gameplay/PowerUpSpawner.h>
 #include <Gameplay/Zombie.h>
 
 #include "Render/ManualMap.h"
@@ -32,11 +31,7 @@ class World
 		World(sf::RenderWindow& window, std::function<void()> onDeathCallback, bool isHardMode);
 		~World();
 
-		// TO-DO: Ideally the scene should be read from file.
 		bool load();
-
-		// To-Do: Implement a unload()
-
 		void update(uint32_t deltaMilliseconds);
 		void render(sf::RenderWindow& window);
 		void handleEvent(const sf::Event& event);
@@ -46,21 +41,15 @@ class World
 		int m_lastMoney = 0;
 
 	private:
-
-		// This is just an example. Think a good way to group the actors of your game. If they need any type of manager, etc...
 		Zombie* m_player{ nullptr };
 
-		AddHealthPowerUp* m_healthPowerup{ nullptr };
-		AddMoveSpeedPowerUP* m_movespeedPowerup{ nullptr };
+		PowerUpSpawner* m_powerUpSpawner{ nullptr };
 
 		ManualMap* m_manualMap = nullptr;
 
 		UIManager* m_uiManager = nullptr;
 
 		ObjectLayer* m_collisionLayer{ nullptr };
-
-		//ObstacleTest
-		Obstacle* m_obstacle = nullptr;
 
 		ObstacleSpawner* m_obstacleSpawner = nullptr;
 		SpawnerManager* m_spawnerManager = nullptr;

@@ -1,4 +1,3 @@
-// PowerUp.h
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <Utils/IGrabbable.h>
@@ -14,12 +13,16 @@ public:
 
     virtual void update(float deltaTime);
     void render(sf::RenderWindow& window);
+
     bool isMarkedForRemoval() const;
+    const sf::FloatRect getBounds() const;
 
 protected:
+    Zombie* m_player = nullptr;
+
+    bool m_collected = false;
+    float m_fallSpeed = 600.f;
+
     sf::Sprite m_sprite;
     sf::Texture m_texture;
-    Zombie* m_player = nullptr;
-    bool m_collected = false;
-    float m_fallSpeed = 100.f; // Velocidad de caída (px por segundo)
 };

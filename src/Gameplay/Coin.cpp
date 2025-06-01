@@ -5,15 +5,13 @@ Coin::Coin(const sf::Vector2f& position, const sf::Vector2f& size, sf::Texture* 
 {
     m_sprite.setTexture(*texture);
     m_sprite.setPosition(position);
-
-    // Escala el sprite si quieres que encaje en el tamaño deseado
     const auto texSize = texture->getSize();
     m_sprite.setScale(size.x / texSize.x, size.y / texSize.y);
 }
 
 void Coin::update(float deltaSeconds)
 {
-    m_velocity.y += m_gravity * deltaSeconds; // apply gravity
+    m_velocity.y += m_gravity * deltaSeconds;
     m_sprite.move(0.f, m_velocity.y * deltaSeconds);
 }
 
