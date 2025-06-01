@@ -6,7 +6,9 @@ Esquiva los coches que se te aproximan, recolecta monedas, e intenta llegar todo
 PowerUps :
 
  Curación (Te devuelve una vida que hayas perdido)
+ 
  Boost (Te aumenta la velocidad de movimiento durante un periodo de tiempo)
 
  **CONTROLES**
+ 
  A || D - Movimiento Lateral
