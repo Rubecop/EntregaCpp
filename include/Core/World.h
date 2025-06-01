@@ -9,7 +9,7 @@
 #include <Gameplay/Zombie.h>
 #include "Render/ManualMap.h"
 #include <UI/UIManager.h>
-
+#include <functional>
 namespace sf
 {
 	class RenderWindow;
@@ -26,7 +26,7 @@ class ObjectLayer;
 class World
 {
 	public:
-
+		World(sf::RenderWindow& window, std::function<void()> onDeathCallback);
 		~World();
 
 		// TO-DO: Ideally the scene should be read from file.
@@ -36,6 +36,8 @@ class World
 
 		void update(uint32_t deltaMilliseconds);
 		void render(sf::RenderWindow& window);
+		void handleEvent(const sf::Event& event);
+		bool isGameOver() const;
 
 	private:
 
@@ -56,4 +58,8 @@ class World
 		ObstacleSpawner* m_obstacleSpawner = nullptr;
 		SpawnerManager* m_spawnerManager = nullptr;
 		CoinSpawner* m_coinSpawner = nullptr;
+
+		std::function<void()> m_onDeathCallback;
+		bool m_isGameOver{ false };
+		void checkPlayerDeath();
 };

@@ -12,8 +12,8 @@ World::~World()
 	delete m_manualMap;
 }
 
-
-bool World::load()
+World::World(sf::RenderWindow& window, std::function<void()> onDeathCallback)
+	: m_onDeathCallback(onDeathCallback)
 {
 	constexpr float millisecondsToSeconds = 1 / 1000.f;
 
@@ -35,7 +35,7 @@ bool World::load()
 	zombie->setPosition({ 850.0f, 750.0f });
 	sf::FloatRect playerBounds = m_player->getBounds();
 
-	m_spawnerManager = new SpawnerManager(m_player,2.0f, { 200.f, 300.f }, 4.0f);
+	m_spawnerManager = new SpawnerManager(m_player, 2.0f, { 200.f, 300.f }, 4.0f);
 
 	m_healthPowerup = new AddHealthPowerUp(m_player, { 700.f,0.f });
 
@@ -50,7 +50,12 @@ bool World::load()
 	{
 		m_spawnerManager->handlePlayerCollision(playerBounds);
 	}
-	return initOk;
+}
+
+bool World::load()
+{
+	
+	return true;
 }
 
 void World::update(uint32_t deltaMilliseconds)
@@ -77,7 +82,9 @@ void World::update(uint32_t deltaMilliseconds)
 		sf::FloatRect playerBounds = m_player->getBounds();
 		m_coinSpawner->handlePlayerCollision(playerBounds);
 	}
+	checkPlayerDeath();
 }
+
 
 void World::render(sf::RenderWindow& window)
 {
@@ -91,4 +98,22 @@ void World::render(sf::RenderWindow& window)
 	if (m_uiManager)
 		m_uiManager->render(window);
 	m_coinSpawner->render(window);
+}
+
+void World::handleEvent(const sf::Event& event)
+{
+}
+
+void World::checkPlayerDeath()
+{
+	if (m_player && m_player->GetHealth() <= 0 && !m_isGameOver)
+	{
+		m_isGameOver = true;
+		if (m_onDeathCallback)
+			m_onDeathCallback();
+	}
+}
+bool World::isGameOver() const
+{
+	return m_isGameOver;
 }

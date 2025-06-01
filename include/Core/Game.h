@@ -2,6 +2,10 @@
 
 #include <cstdint>
 #include <string>
+#include <SFML/Graphics.hpp>
+#include <memory>
+#include <Core/MainMenu.h>
+#include <Core/World.h>
 
 namespace sf
 {
@@ -33,6 +37,16 @@ class Game
 
 	private:
 
+		enum class State
+		{
+			Menu,
+			Playing
+		};
+		State m_currentState{ State::Menu };
 		sf::RenderWindow* m_window{ nullptr };
 		World* m_world{ nullptr };
+		MainMenu* m_mainMenu{ nullptr };
+
+		void changeToMenu();
+		void changeToWorld();
 };
