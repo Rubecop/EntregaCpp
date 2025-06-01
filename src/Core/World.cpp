@@ -45,6 +45,7 @@ World::World(sf::RenderWindow& window, std::function<void()> onDeathCallback, bo
 	m_spawnerManager = new SpawnerManager(m_player, spawnRate, { 200.f, 300.f }, 2.0f, m_isHardMode);
 	
 	m_healthPowerup = new AddHealthPowerUp(m_player, { 700.f,0.f });
+	m_movespeedPowerup = new AddMoveSpeedPowerUP(m_player, { 800.f,0.f });
 
 	m_coinSpawner = new CoinSpawner(m_player,7.0f,550.f,1150.f,sf::Vector2f(0.f, 0.f),sf::Vector2f(100.f, 100.f));
 
@@ -70,10 +71,13 @@ void World::update(uint32_t deltaMilliseconds)
 		m_spawnerManager->update(deltaSeconds);
 
 	m_healthPowerup->update(deltaSeconds);
+	m_movespeedPowerup->update(deltaSeconds);
 
 	m_coinSpawner->update(deltaSeconds);
 
 	m_manualMap->update(deltaSeconds);
+
+	m_uiManager->updateDistance(deltaMilliseconds);
 
 	if (m_player && m_spawnerManager)
 	{
@@ -103,6 +107,7 @@ void World::render(sf::RenderWindow& window)
 		m_uiManager->render(window);
 	m_coinSpawner->render(window);
 	m_healthPowerup->render(window);
+	m_movespeedPowerup->render(window);
 }
 
 void World::handleEvent(const sf::Event& event)
@@ -114,8 +119,11 @@ void World::checkPlayerDeath()
 	if (m_player && m_player->GetHealth() <= 0 && !m_isGameOver)
 	{
 		m_isGameOver = true;
+		m_lastDistance = m_player->distanciaMetros;
+		m_lastMoney = m_player->GetCoins();
+
 		if (m_onDeathCallback)
-			m_onDeathCallback();
+			m_onDeathCallback(); // Ya no cambia al menú. Lo hará Game.
 	}
 }
 bool World::isGameOver() const

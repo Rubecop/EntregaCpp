@@ -6,10 +6,13 @@
 #include <Gameplay/SpawnerManager.h>
 #include <Gameplay/CoinSpawner.h>
 #include <Gameplay/AddHealthPowerUp.h>
+#include <Gameplay/AddMoveSpeedPowerUP.h>
 #include <Gameplay/Zombie.h>
+
 #include "Render/ManualMap.h"
 #include <UI/UIManager.h>
 #include <functional>
+
 namespace sf
 {
 	class RenderWindow;
@@ -39,12 +42,16 @@ class World
 		void handleEvent(const sf::Event& event);
 		bool isGameOver() const;
 
+		float m_lastDistance = 0.f;
+		int m_lastMoney = 0;
+
 	private:
 
 		// This is just an example. Think a good way to group the actors of your game. If they need any type of manager, etc...
 		Zombie* m_player{ nullptr };
 
 		AddHealthPowerUp* m_healthPowerup{ nullptr };
+		AddMoveSpeedPowerUP* m_movespeedPowerup{ nullptr };
 
 		ManualMap* m_manualMap = nullptr;
 

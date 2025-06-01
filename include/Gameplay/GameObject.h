@@ -24,5 +24,5 @@ class GameObject
 
 	protected:
 
-		sf::Vector2f m_position{ .0f, .0f };
+		sf::Vector2f m_position{ .0f, -50.0f };
 };

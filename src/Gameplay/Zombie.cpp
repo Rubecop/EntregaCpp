@@ -47,6 +47,10 @@ void Zombie::update(float deltaMilliseconds)
 	// Clamp horizontal (entre 500 y 1200)
 	m_position.x = std::clamp(m_position.x, 500.f, 1200.f);
 	//m_sprite.setPosition(m_position);
+	float deltaSeconds = deltaMilliseconds / 1000.f;
+	m_fakeDistance += m_fakeSpeed * deltaSeconds;
+
+	distanciaMetros = static_cast<int>(m_fakeDistance);
 
 	Enemy::update(deltaMilliseconds);
 }
@@ -75,6 +79,15 @@ int Zombie::GetCoins()
 {
 	return currentCoins;
 }
+const sf::Vector2f& Zombie::getSpeed() const
+{
+	return m_speed;
+}
+void Zombie::setSpeed(const sf::Vector2f& speed)
+{
+	m_speed = speed;
+}
+
 int Zombie::GetHealth()
 {
 	return currentHealth;

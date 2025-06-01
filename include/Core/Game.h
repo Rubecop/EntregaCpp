@@ -6,6 +6,7 @@
 #include <memory>
 #include <Core/MainMenu.h>
 #include <Core/World.h>
+#include <Core/GameOverMenu.h>
 
 namespace sf
 {
@@ -36,18 +37,24 @@ class Game
 		void update(uint32_t deltaMilliseconds);
 		void render();
 		void onPlayPressed(bool isHardMode);
+		void createWorld();
+
+		float m_lastDistance = 0.f;
+		int m_lastMoney = 0;
 
 	private:
 
 		enum class State
 		{
 			Menu,
-			Playing
+			Playing,
+			GameOver
 		};
 		State m_currentState{ State::Menu };
 		sf::RenderWindow* m_window{ nullptr };
 		World* m_world{ nullptr };
 		MainMenu* m_mainMenu{ nullptr };
+		GameOverMenu* m_gameOverMenu = { nullptr };
 
 		void changeToMenu();
 		void changeToWorld();

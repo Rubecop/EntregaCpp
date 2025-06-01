@@ -12,7 +12,7 @@ public:
 
     virtual void onGrab() override = 0;
 
-    void update(float deltaTime);
+    virtual void update(float deltaTime);
     void render(sf::RenderWindow& window);
     bool isMarkedForRemoval() const;
 

@@ -37,7 +37,7 @@ void CoinSpawner::update(float deltaSeconds)
         Coin* coin = m_coins[i];
         coin->update(deltaSeconds);
 
-        if (coin->getBounds().top > 1200)
+        if (coin->getBounds().top > 1500)
         {
             delete coin;
             m_coins.erase(m_coins.begin() + i);

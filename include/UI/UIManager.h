@@ -7,7 +7,7 @@ class UIManager
 public:
     UIManager(Zombie* player);
     void render(sf::RenderWindow& window);
-
+    void updateDistance(float deltaMilliseconds);
 private:
     Zombie* m_player;
     sf::Texture* m_heartTexture;
@@ -17,4 +17,6 @@ private:
     sf::Sprite m_coinSprite;
     sf::Font font;
     sf::Text coinText;
+    sf::Text m_distanceText;
+
 };

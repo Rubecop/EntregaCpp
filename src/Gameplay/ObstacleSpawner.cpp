@@ -10,7 +10,7 @@ ObstacleSpawner::ObstacleSpawner(Zombie* player,
     bool isHardMode)
     : m_spawnInterval(spawnInterval),
     m_elapsedTime(initialOffset),
-    m_enabled(true),            // por defecto arrancamos habilitados
+    m_enabled(true),
     m_spawnPosition(spawnPosition),
     player(player),
     m_obstacleSize(obstacleSize),
@@ -28,25 +28,26 @@ ObstacleSpawner::~ObstacleSpawner()
 
 void ObstacleSpawner::update(float deltaSeconds)
 {
-    // 1) Actualizamos la posición de TODOS los obstáculos generados hasta ahora
-    for (auto* obs : m_obstacles)
+    for (int i = static_cast<int>(m_obstacles.size()) - 1; i >= 0; --i)
     {
+        Obstacle* obs = m_obstacles[i];
         obs->update(deltaSeconds);
+
+        const sf::FloatRect bounds = obs->getBounds();
+        if (bounds.top > 1500.f)
+        {
+            delete obs;
+            m_obstacles.erase(m_obstacles.begin() + i);
+        }
     }
 
-    // 2) Si este spawner está "habilitado", avanzamos su temporizador y spawneamos cuando toque
-    if (!m_enabled)
-        return;
-
+    if (!m_enabled) { return; }
     m_elapsedTime += deltaSeconds;
 
-    // Si hemos superado el intervalo, generamos uno nuevo y descontamos ese intervalo
     if (m_elapsedTime >= m_spawnInterval)
     {
         spawnObstacle();
         m_elapsedTime -= m_spawnInterval;
-        // (si deltaSeconds > spawnInterval, en un frame muy grande
-        //  quizá deba usarse while(m_elapsedTime >= m_spawnInterval))
     }
 }
 
@@ -78,13 +79,11 @@ void ObstacleSpawner::spawnObstacle()
 
 void ObstacleSpawner::handlePlayerCollision(const sf::FloatRect& playerBounds)
 {
-    // Recorremos de atrás hacia adelante para poder borrar elementos sin invalidar índices
     for (int i = static_cast<int>(m_obstacles.size()) - 1; i >= 0; --i)
     {
         Obstacle* obs = m_obstacles[i];
         if (obs->getBounds().intersects(playerBounds))
         {
-            // Si hay colisión: lo borramos de la memoria y del vector
             player->TakeDamage(1);
             delete obs;
             m_obstacles.erase(m_obstacles.begin() + i);

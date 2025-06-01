@@ -29,6 +29,7 @@ set(PROJECT_HEADERS
     include/Core/Game.h
     include/Core/World.h
     include/Core/MainMenu.h
+    include/Core/GameOverMenu.h
 
     include/Gameplay/Enemy.h
     include/Gameplay/GameObject.h
@@ -42,6 +43,7 @@ set(PROJECT_HEADERS
     include/Gameplay/PowerUpBase.h
     include/Gameplay/Coin.h
     include/Gameplay/CoinSpawner.h
+    include/Gameplay/PowerUpSpawner.h
 
     include/Render/SFMLOrthogonalLayer.h
     include/Render/ManualMap.h
@@ -58,6 +60,7 @@ set(PROJECT_SOURCES
     src/Core/ManualMap.cpp
     src/Core/IGrabbable.cpp
     src/Core/MainMenu.cpp
+    src/Core/GameOverMenu.cpp
 
     src/Gameplay/Enemy.cpp
     src/Gameplay/Zombie.cpp
@@ -70,7 +73,7 @@ set(PROJECT_SOURCES
     src/Gameplay/PowerUpBase.cpp
     src/Gameplay/Coin.cpp
     src/Gameplay/CoinSpawner.cpp
-
+    src/Gameplay/PowerUpSpawner.cpp
 
     src/UI/UIManager.cpp
 
